@@ -1,0 +1,64 @@
+version: '3'
+services:
+
+  tweet_collector:
+    build: tweet_collector/
+    volumes:
+    - ./tweet_collector/:/app
+    depends_on:
+    - mongodb
+
+  mongodb:
+    image: mongo
+    ports:
+    - 27017:27017
+
+  airflow:
+    image: puckel/docker-airflow
+    ports:
+      - 8080:8080
+    volumes:
+      - ./airflow/dags/:/usr/local/airflow/dags
+      - ./airflow/requirements.txt:/requirements.txt
+    command: ["webserver", "scheduler"]
+    depends_on:
+      - mongodb
+      - postgresdb
+
+  # etl_job:
+  #   build: etl_job/
+  #   volumes:
+  #   - ./etl_job/:/app
+  #   depends_on:
+  #   - mongodb
+  #   - postgresdb
+  #   - tweet_collector
+
+  postgresdb:
+    image: postgres
+    ports:
+    - 5555:5432
+    environment:
+    - POSTGRES_USER= postgres
+    - POSTGRES_PASSWORD= 1234
+  #
+  slack_bot:
+    build: slack_bot/
+    volumes:
+      - ./slack_bot/:/app
+    depends_on:
+      - postgresdb
+  #
+  metabase_dash:
+    image: metabase/metabase
+    ports:
+      - 3000:3000
+    depends_on:
+      - postgresdb
+    environment:
+      - MB_DB_TYPE=postgres
+      - MB_DB_DBNAME=postgres
+      - MB_DB_PORT=5432
+      - MB_DB_USER=postgres
+      - MB_DB_PASS=1234
+      - MB_DB_HOST=postgresdb
