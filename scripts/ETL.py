@@ -5,6 +5,7 @@ import spacy
 import pandas as pd
 import re
 import pymongo
+import os
 
 #Load the trained SciSpacy model
 ner_bio = spacy.load('en_ner_bionlp13cg_md')
@@ -99,6 +100,7 @@ def ET(query):
                             tok_abstr),index = [i],
                             columns =ent_count_dict(tok_abstr).keys())
         df = pd.concat([df, df1], axis = 0)
+        print(f'Row {i} added to the dataframe')
     #Add doi, version and uniqueID
     df['doi'] = get_doi(query)
     df['unique_id'] = get_unique_id(query)
@@ -106,14 +108,41 @@ def ET(query):
     print('NER complete')
     return df
 
+def ET_nested_dict(query):
+    ele_dict = {}
+    #Fetch the absract and doi first
+    for i in range(len(query)):
+        abstract = query[i]['abstract']
+        #Remove links
+        abstract = re.sub(r'^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$', '', abstract)
+        #Tokenize abstract
+        tok_abstr = ner_bio(abstract)
+        ele_dict[query[i]['_id']] = ent_count_dict(tok_abstr)
+        print(f'Element dictionary {i} has been written')
+    ind = ele_dict.keys()
+    cols_dict = list(ele_dict.values())
+    print('Building the dataframe')
+    df = pd.DataFrame(data=cols_dict, index=ind)
+    df['doi'] = get_doi(query)
+    df['version'] = get_version(query)
+    df = df.reset_index()
 
-def load(dataframe, dataframe_meta, category):
+    return df
+
+
+def load(dataframe, category):
     dataframe.to_pickle(f'../Pickles/{category}.pkl')
+
+
+def load_meta(dataframe_meta, category):
     dataframe_meta.to_pickle(f'../Pickles/{category}_meta.pkl')
 
 
 for category in category_list:
     cat_query = query_mongo(category)
-    df_raw = ET(cat_query)
-    df_meta = get_meta(cat_query)
-    load(df_raw, df_meta, category)
+    if not os.path.isfile(f'../Pickles/{category}.pkl'):
+        df_raw = ET_nested_dict(cat_query)
+        load(df_raw, category)
+    if not os.path.isfile(f'../Pickles/{category}_meta.pkl'):
+        df_meta = get_meta(cat_query)
+        load_meta(df_meta, category)
