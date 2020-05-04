@@ -118,7 +118,6 @@ def ET_nested_dict(query):
         #Tokenize abstract
         tok_abstr = ner_bio(abstract)
         ele_dict[query[i]['_id']] = ent_count_dict(tok_abstr)
-        print(f'Element dictionary {i} has been written')
     ind = ele_dict.keys()
     cols_dict = list(ele_dict.values())
     print('Building the dataframe')
@@ -126,7 +125,6 @@ def ET_nested_dict(query):
     df['doi'] = get_doi(query)
     df['version'] = get_version(query)
     df = df.reset_index()
-
     return df
 
 
