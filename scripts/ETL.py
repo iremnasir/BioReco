@@ -6,6 +6,8 @@ import pandas as pd
 import re
 import pymongo
 import os
+import numpy as np
+
 
 #Load the trained SciSpacy model
 ner_bio = spacy.load('en_ner_bionlp13cg_md')
@@ -110,21 +112,21 @@ def ET_nested_dict(query):
     df = df.reset_index()
     return df
 
-def ET(query):
+def ET(query, category_df):
     """Takes the category and returns the article-entity df"""
-    df = pd.DataFrame()
-    for i in range(len(query)):
-        #Fetch the absract and doi first
-        abstract = query[i]['abstract']
-        #Remove links
-        abstract = re.sub(r'^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$', '', abstract)
-        #Tokenize abstract
-        tok_abstr = ner_bio(abstract)
-        #Build entity-count dictionary
-        df1 = pd.DataFrame(ent_count_dict(
-                            tok_abstr),index = [9999999],
-                            columns =ent_count_dict(tok_abstr).keys())
-        df = pd.concat([df, df1], axis = 0)
+    dummy = np.zeros((1, len(category_df.columns)))
+    df = pd.DataFrame(dummy, index =[9999999], columns = category_df.columns)
+    #Fetch the absract and doi first
+    abstract = query[0]['abstract']
+    #Remove links
+    abstract = re.sub(r'^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$', '', abstract)
+    #Tokenize abstract
+    tok_abstr = ner_bio(abstract)
+    #Build entity-count dictionary
+    user_dict = ent_count_dict(tok_abstr)
+    print(user_dict)
+    for key in user_dict.keys():
+        df[key] = user_dict[key]
     return df
 
 
