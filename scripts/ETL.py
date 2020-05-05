@@ -83,30 +83,13 @@ def get_meta(query):
     print('Metadata Recoded')
     return df_meta
 
+def query_mongo_article(doi):
+    """Query Mongo DB with a specific doi"""
+    query_cat = list(db.BioReco_raw.find({'doi': f'{doi}'}))
+    size = len(query_cat)
+    print(f'There are {size} articles in {doi} category')
+    return query_cat
 
-def ET(query):
-    """Takes the category and returns the article-entity df"""
-    df = pd.DataFrame()
-    print('Fetching the abstracts')
-    for i in range(len(query)):
-        #Fetch the absract and doi first
-        abstract = query[i]['abstract']
-        #Remove links
-        abstract = re.sub(r'^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$', '', abstract)
-        #Tokenize abstract
-        tok_abstr = ner_bio(abstract)
-        #Build entity-count dictionary
-        df1 = pd.DataFrame(ent_count_dict(
-                            tok_abstr),index = [i],
-                            columns =ent_count_dict(tok_abstr).keys())
-        df = pd.concat([df, df1], axis = 0)
-        print(f'Row {i} added to the dataframe')
-    #Add doi, version and uniqueID
-    df['doi'] = get_doi(query)
-    df['unique_id'] = get_unique_id(query)
-    df['version'] = get_version(query)
-    print('NER complete')
-    return df
 
 def ET_nested_dict(query):
     ele_dict = {}
@@ -127,6 +110,23 @@ def ET_nested_dict(query):
     df = df.reset_index()
     return df
 
+def ET(query):
+    """Takes the category and returns the article-entity df"""
+    df = pd.DataFrame()
+    for i in range(len(query)):
+        #Fetch the absract and doi first
+        abstract = query[i]['abstract']
+        #Remove links
+        abstract = re.sub(r'^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$', '', abstract)
+        #Tokenize abstract
+        tok_abstr = ner_bio(abstract)
+        #Build entity-count dictionary
+        df1 = pd.DataFrame(ent_count_dict(
+                            tok_abstr),index = [9999999],
+                            columns =ent_count_dict(tok_abstr).keys())
+        df = pd.concat([df, df1], axis = 0)
+    return df
+
 
 def load(dataframe, category):
     dataframe.to_pickle(f'../Pickles/{category}.pkl')
@@ -135,12 +135,12 @@ def load(dataframe, category):
 def load_meta(dataframe_meta, category):
     dataframe_meta.to_pickle(f'../Pickles/{category}_meta.pkl')
 
-
-for category in category_list:
-    cat_query = query_mongo(category)
-    if not os.path.isfile(f'../Pickles/{category}.pkl'):
-        df_raw = ET_nested_dict(cat_query)
-        load(df_raw, category)
-    if not os.path.isfile(f'../Pickles/{category}_meta.pkl'):
-        df_meta = get_meta(cat_query)
-        load_meta(df_meta, category)
+#For scraping purposes
+# for category in category_list:
+#     cat_query = query_mongo(category)
+#     if not os.path.isfile(f'../Pickles/{category}.pkl'):
+#         df_raw = ET_nested_dict(cat_query)
+#         load(df_raw, category)
+#     if not os.path.isfile(f'../Pickles/{category}_meta.pkl'):
+#         df_meta = get_meta(cat_query)
+#         load_meta(df_meta, category)
