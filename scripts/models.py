@@ -55,18 +55,19 @@ def read_category_df(category):
                 category_file_list.append(category)
     df = pd.DataFrame()
     for category in category_file_list:
-        df1 = pd.read_pickle(f'../Pickles/{category}')
-        df = pd.concat([df, df1], axis = 0)
+        df1 = pd.read_hdf(f'../Pickles/{category}')
+        df = pd.concat([df, df1], axis = 0, ignore_index=True)
     df_meta = pd.DataFrame()
     for category_meta in meta_file_list:
-        df1_meta = pd.read_pickle(f'../Pickles/{category_meta}')
-        df_meta = pd.concat([df_meta, df1_meta])
+        df1_meta = pd.read_hdf(f'../Pickles/{category_meta}')
+        df_meta = pd.concat([df_meta, df1_meta], axis = 0, ignore_index=True)
     return df, df_meta
 
 
-def create_aa_matrix(user_input, keyword, category):
+def create_aa_matrix(user_input, category, keyword=False):
     """Takes the category df and makes and article-article matrix"""
     df, df_meta = read_category_df(category)
+    print(df.columns)
     #Take doi if keyword is False, extract the abstract and model.
     #Create a user df with a single entry
     if keyword == False:
@@ -104,9 +105,8 @@ def create_aa_matrix(user_input, keyword, category):
     #Concat it with the user df
 
     assert len(set(df_temp.columns).intersection((df_user_temp.columns))) >= 1
-    print(len(set(df_temp.columns).intersection((df_user_temp.columns))))
     df_temp = pd.concat([df_temp, df_user_temp], axis = 0, ignore_index=False)
-    print(df_temp)
+    df_temp = df_temp.fillna(0)
     #Create an empty A-A matrix
     AA = np.zeros((len(df_temp), len(df_temp)))
     #Convert into df
@@ -132,15 +132,21 @@ def create_aa_matrix(user_input, keyword, category):
     neighbors['score'] = neighbors[9999999]*neighbors['overlapping']
     #Add doi of each
     neighbors['doi'] = df.loc[neighbors.index]['doi']
+    neighbors['unique_id'] = df.loc[neighbors.index]['index']
     #Filter with scores higher than 0
     neighbors = neighbors[neighbors['score']> 0]
     #Sort by score
     neighbors = neighbors.sort_values(by=['score'], ascending=False)
+    #Drop the same entry if it pops up
+    if keyword == False:
+        neighbors = neighbors.drop(neighbors[(neighbors.doi == user_doi)].index)
     #Drop duplicates, keep first
     neighbors = neighbors.drop_duplicates(keep='first')
-    return neighbors
-    # #Collect meta and filter (or not) for different versions
-    # df_meta_refined = pd.DataFrame(columns = df_meta.columns)
+    #Collect meta
+    meta_refined = neighbors.merge(df_meta, left_on='unique_id', right_on= 'unique_id', how='left')
+    print(neighbors)
+    print(meta_refined['title'])
+
     # for i in new_neighbor:
     #     recom_article_meta = pd.DataFrame(df_meta.iloc[i]).T
     #     df_meta_refined = pd.concat([df_meta_refined, recom_article_meta], axis = 0)
@@ -157,7 +163,7 @@ def create_aa_matrix(user_input, keyword, category):
 
 #Load the trained SciSpacy model
 ner_bio = spacy.load('en_ner_bionlp13cg_md')
-#user_doi = '10.1101/2020.02.05.935890'
-#user_keywords= 'hydroxychloroquine, anti-COVID-19, chloroquine, remdesivir, coronavirus'
-n = create_aa_matrix(user_keywords, df, keyword=True)
-#print(n)
+user_doi = '10.1101/2020.04.27.063180'
+#user_keywords= 'hydroxychloroquine, chloroquine, remdesivir, coronavirus'
+n = create_aa_matrix(user_doi, category = 'biophysics', keyword=False)
+print(n)

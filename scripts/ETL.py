@@ -130,18 +130,26 @@ def ET(query, category_df):
 
 
 def load(dataframe, category):
-    dataframe.to_pickle(f'../Pickles/{category}.pkl')
+    dataframe.to_hdf(f'../Pickles/{category}.h5', key='df', format='fixed')
 
 
 def load_meta(dataframe_meta, category):
-    dataframe_meta.to_pickle(f'../Pickles/{category}_meta.pkl')
+    dataframe_meta.to_hdf(f'../Pickles/{category}_meta.h5', key='df_meta', format='fixed')
 
 #For scraping purposes
+# sub_categ = ['biophysics', 'bioinformatics', 'evolutionary biology', 'scientific communication and education']
+# for category in sub_categ:
+#     cat_query = query_mongo(category)
+#     df_raw = ET_nested_dict(cat_query)
+#     load(df_raw, category)
+#     df_meta = get_meta(cat_query)
+#     load_meta(df_meta, category)
+
 # for category in category_list:
 #     cat_query = query_mongo(category)
-#     if not os.path.isfile(f'../Pickles/{category}.pkl'):
+#     if not os.path.isfile(f'../Pickles/{category}.h5'):
 #         df_raw = ET_nested_dict(cat_query)
 #         load(df_raw, category)
-#     if not os.path.isfile(f'../Pickles/{category}_meta.pkl'):
+#     if not os.path.isfile(f'../Pickles/{category}_meta.h5'):
 #         df_meta = get_meta(cat_query)
 #         load_meta(df_meta, category)
