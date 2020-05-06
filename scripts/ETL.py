@@ -124,7 +124,6 @@ def ET(query, category_df):
     tok_abstr = ner_bio(abstract)
     #Build entity-count dictionary
     user_dict = ent_count_dict(tok_abstr)
-    print(user_dict)
     for key in user_dict.keys():
         df[key] = user_dict[key]
     return df
