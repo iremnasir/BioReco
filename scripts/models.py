@@ -42,7 +42,6 @@ def read_category_df(category):
 
     #Slice the category to get the unique names out of it
     cat_str = category[1:6]
-    print(cat_str)
     meta_file_list = []
     category_file_list=[]
     #Search the file list
@@ -54,7 +53,6 @@ def read_category_df(category):
                 meta_file_list.append(category)
             else:
                 category_file_list.append(category)
-    print(meta_file_list, category_file_list)
     df = pd.DataFrame()
     for category in category_file_list:
         df1 = pd.read_pickle(f'../Pickles/{category}')
@@ -66,8 +64,9 @@ def read_category_df(category):
     return df, df_meta
 
 
-def create_aa_matrix(user_input, df, keyword):
+def create_aa_matrix(user_input, keyword, category):
     """Takes the category df and makes and article-article matrix"""
+    df, df_meta = read_category_df(category)
     #Take doi if keyword is False, extract the abstract and model.
     #Create a user df with a single entry
     if keyword == False:
@@ -157,10 +156,8 @@ def create_aa_matrix(user_input, df, keyword):
 
 
 #Load the trained SciSpacy model
-df_neuro, df_meta_neuro = read_category_df('neuroscience')
-#ner_bio = spacy.load('en_ner_bionlp13cg_md')
-#df = pd.read_pickle('../Pickles/pharmacology and toxicology.pkl')
+ner_bio = spacy.load('en_ner_bionlp13cg_md')
 #user_doi = '10.1101/2020.02.05.935890'
 #user_keywords= 'hydroxychloroquine, anti-COVID-19, chloroquine, remdesivir, coronavirus'
-#n = create_aa_matrix(user_keywords, df, keyword=True)
+n = create_aa_matrix(user_keywords, df, keyword=True)
 #print(n)
