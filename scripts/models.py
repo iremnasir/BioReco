@@ -34,8 +34,17 @@ def get_doi_publ(doi):
     return found, item
 
 def read_category_df(category):
-    """Read the user input category and fetch files with duplicates"""
+    """
+    Parameters
+    -----------
+    Category name that user wants to get suggestions from
 
+    Returns
+    ----------
+    df: Dataframe of all items in the category, index: articles, columns: entity
+    df_meta: Metadata of the articles in the df above
+    """
+    
     #Define the path
     PATH = "../Pickles"
     files = os.listdir(PATH)
@@ -64,7 +73,7 @@ def read_category_df(category):
     return df, df_meta
 
 
-def create_aa_matrix(user_input, category, keyword=False):
+def recommend(user_input, category, keyword=False):
     """Takes the category df and makes and article-article matrix"""
     df, df_meta = read_category_df(category)
     print(df.columns)
@@ -144,8 +153,10 @@ def create_aa_matrix(user_input, category, keyword=False):
     neighbors = neighbors.drop_duplicates(keep='first')
     #Collect meta
     meta_refined = neighbors.merge(df_meta, left_on='unique_id', right_on= 'unique_id', how='left')
-    print(neighbors)
-    print(meta_refined['title'])
+    return meta_refined
+
+
+
 
     # for i in new_neighbor:
     #     recom_article_meta = pd.DataFrame(df_meta.iloc[i]).T
