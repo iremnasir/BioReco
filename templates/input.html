@@ -1,0 +1,51 @@
+{% extends "_base.html" %}
+
+{% block content %}
+
+
+<form action="/results">
+  <section class="main-splash">
+
+    <h3 class="Reco">Enter doi/keywords and select the category of suggestions</h3>
+
+    <div class="row">
+      <input type="text" class="form-control" name="user_input" placeholder="Type doi or keywords" required>
+    </div>
+
+
+    <select id="category", name="category">
+      <option value="animal behavior and cognition">Animal Behavior and Cognition</option>
+      <option value="biochemistry">Biochemistry</option>
+      <option value="bioengineering">Bioengineering</option>
+      <option value="bioinformatics">Bioinformatics</option>
+      <option value="biophysics">Biophysics</option>
+      <option value="cancer biology">Cancer Biology</option>
+      <option value="cell biology">Cell Biology</option>
+      <option value="developmental biology">Developmental Biology</option>
+      <option value="ecology">Ecology</option>
+      <option value="evolutionary biology">Evolutionary Biology</option>
+      <option value="genetics">Genetics</option>
+      <option value="genomics">Genomics</option>
+      <option value="immunology">Immunology</option>
+      <option value="microbiology">Microbiology</option>
+      <option value="molecular biology">Molecular Biology</option>
+      <option value="neuroscience">Neuroscience</option>
+      <option value="paleontology">Paleontology</option>
+      <option value="pathology">Pathology</option>
+      <option value="pharmacology and toxicology">Pharmacology and Toxicology</option>
+      <option value="physiology">Physiology</option>
+      <option value="plant biology">Plant Biology</option>
+      <option value="scientific communication and education">Scientific Communication and Education</option>
+      <option value="systems biology">Systems Biology</option>
+      <option value="zoology">Zoology</option>
+
+    </select>
+
+    <div class="button-container">
+      <button type="submit" class="btn btn-danger btn-lg m-3">Submit</button>
+    </div>
+
+  </section>
+</form>
+
+{% endblock %}

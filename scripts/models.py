@@ -3,11 +3,14 @@
 import pandas as pd
 from scipy.spatial import distance
 import requests
-import spacy
 import numpy as np
 import re
 import os
-from ETL import query_mongo_article, ET, ent_count_dict
+from scripts.ETL import query_mongo_article, ET, ent_count_dict
+import spacy
+
+ner_bio = spacy.load('en_ner_bionlp13cg_md')
+
 
 
 def get_doi_publ(doi):
@@ -44,9 +47,9 @@ def read_category_df(category):
     df: Dataframe of all items in the category, index: articles, columns: entity
     df_meta: Metadata of the articles in the df above
     """
-    
+
     #Define the path
-    PATH = "../Pickles"
+    PATH = "./Pickles"
     files = os.listdir(PATH)
 
     #Slice the category to get the unique names out of it
@@ -64,11 +67,11 @@ def read_category_df(category):
                 category_file_list.append(category)
     df = pd.DataFrame()
     for category in category_file_list:
-        df1 = pd.read_hdf(f'../Pickles/{category}')
+        df1 = pd.read_hdf(f'./Pickles/{category}')
         df = pd.concat([df, df1], axis = 0, ignore_index=True)
     df_meta = pd.DataFrame()
     for category_meta in meta_file_list:
-        df1_meta = pd.read_hdf(f'../Pickles/{category_meta}')
+        df1_meta = pd.read_hdf(f'./Pickles/{category_meta}')
         df_meta = pd.concat([df_meta, df1_meta], axis = 0, ignore_index=True)
     return df, df_meta
 
@@ -148,33 +151,9 @@ def recommend(user_input, category, keyword=False):
     neighbors = neighbors.sort_values(by=['score'], ascending=False)
     #Drop the same entry if it pops up
     if keyword == False:
-        neighbors = neighbors.drop(neighbors[(neighbors.doi == user_doi)].index)
+        neighbors = neighbors.drop(neighbors[(neighbors.doi == user_input)].index)
     #Drop duplicates, keep first
     neighbors = neighbors.drop_duplicates(keep='first')
     #Collect meta
     meta_refined = neighbors.merge(df_meta, left_on='unique_id', right_on= 'unique_id', how='left')
     return meta_refined
-
-
-
-
-    # for i in new_neighbor:
-    #     recom_article_meta = pd.DataFrame(df_meta.iloc[i]).T
-    #     df_meta_refined = pd.concat([df_meta_refined, recom_article_meta], axis = 0)
-    # # TODO: Implement if clause for filtering further final publication status
-    #
-    #
-    # #Pseudo code here:
-    # df_doi_refined = df_meta_refined[df_meta_refined['published']!= 'NA']
-    # #Where is it published
-    # get_doi_publ(df_doi_refined['published'].iloc[0])[1]['message']['short-container-title']
-    # #How many times is it published
-    # get_doi_publ(df_doi_refined['published'].iloc[0])[1]['message']['is-referenced-by-count']
-
-
-#Load the trained SciSpacy model
-ner_bio = spacy.load('en_ner_bionlp13cg_md')
-user_doi = '10.1101/2020.04.27.063180'
-#user_keywords= 'hydroxychloroquine, chloroquine, remdesivir, coronavirus'
-n = create_aa_matrix(user_doi, category = 'biophysics', keyword=False)
-print(n)
