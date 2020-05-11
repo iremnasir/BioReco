@@ -9,6 +9,12 @@
 
 ## Usage
 
+Steps:
+
+- `pip install -r requirements.txt`
+
+
+
 
 ## Improvements to be made
 

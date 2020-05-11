@@ -5,7 +5,7 @@
 <section class="main-splash" id="bla">
 
   <body>
-    <h1> Welcome to BioReco!</h1>
+    <h1 class="jumbotron" id="welcome"> Welcome to BioReco!</h1>
 
     <iframe width="560" height="315" src="https://www.youtube.com/embed/EwAMtT3ZIpg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
@@ -24,6 +24,21 @@
       </button>
 
     </div>
+
+<div class="card" style="width: 18rem;">
+  <img src="..." class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">Card title</h5>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <a href="#" class="btn btn-primary">Go somewhere</a>
+  </div>
+</div>
+
+<ul class="list-group">
+  {% for i in range(len) %}
+  <li class="list-group-item-{{color}}">{{i}}</li>
+  {% endfor %}
+</ul>
 
 </section>
 

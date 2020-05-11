@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request
-from scripts.models import recommend
-from scripts.train import published_pick
+# from scripts.models import recommend
+# from scripts.train import published_pick
 import pandas as pd
 
 import warnings
@@ -12,7 +12,9 @@ app = Flask(__name__)
 @app.route('/')
 @app.route('/index')
 def landing():
-    return render_template('index.html', title='Landing Page')
+    len = 8
+    color = 'blue'
+    return render_template('index.html', title='Landing Page', len=len, color=color)
 
 @app.route('/input')
 def arguments():

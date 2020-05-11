@@ -1,0 +1,23 @@
+.main-splash {
+  background-color: #62003C;
+  height: 100vh;
+  color: #FFE4F8;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#welcome {
+  background-color: teal;
+}
+
+.list-group-item-red {
+  background-color: red;
+  margin-top: 10px;
+}
+
+.list-group-item-blue{
+  background-color: blue;
+  margin-top: 10px;
+}

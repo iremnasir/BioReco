@@ -16,9 +16,6 @@ cymem==2.0.3
 decorator==4.4.2
 defusedxml==0.6.0
 docutils==0.15.2
-en-core-sci-lg==0.2.4
-en-ner-bc5cdr-md==0.2.4
-en-ner-bionlp13cg-md==0.2.4
 entrypoints==0.3
 Flask==1.1.2
 idna==2.9
@@ -97,3 +94,4 @@ wcwidth==0.1.9
 webencodings==0.5.1
 Werkzeug==1.0.1
 zipp==3.1.0
+https://s3-us-west-2.amazonaws.com/ai2-s2-scispacy/releases/v0.2.4/en_ner_bionlp13cg_md-0.2.4.tar.gz
