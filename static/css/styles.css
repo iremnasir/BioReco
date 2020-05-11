@@ -8,11 +8,21 @@
 #landing{
   height: 100vh;
   background-color: #4B6982;
-
 }
+
+#footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 60px; /* Set the fixed height of the footer here */
+  line-height: 60px; /* Vertically center the text there */
+  background-color: #4B6982;
+  color: #B48EA0;
+}
+
 .main-splash {
   background-color: #4B6982;
-  color: #E69C24;
+  color: #9DADBC;
   display: flex;
   flex-direction: column;
   justify-content: center;
