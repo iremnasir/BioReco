@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from scripts.models import recommend
+from scripts.train import published_pick
 import pandas as pd
 
 import warnings
@@ -33,6 +34,18 @@ def recommender():
         refined_recom = recommend(user_entry, category, keyword=True)
     print(refined_recom)
     return render_template('results.html', tables=[refined_recom.to_html(classes='data')], titles=refined_recom.columns.values)
+
+@app.route('/train')
+def train():
+    sub_categories = ['biochemistry', 'biophysics', 'cancer biology',
+                      'immunology', 'molecular biology']
+    for element in sub_categories:
+        meta = published_pick(element)
+    return render_template('train.html', tables=[meta.to_html(classes='data')], titles=meta.columns.values)
+
+
+
+
 
     if __name__ == "__main__":
         app.run(host='0.0.0.0')

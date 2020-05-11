@@ -156,4 +156,5 @@ def recommend(user_input, category, keyword=False):
     neighbors = neighbors.drop_duplicates(keep='first')
     #Collect meta
     meta_refined = neighbors.merge(df_meta, left_on='unique_id', right_on= 'unique_id', how='left')
+    meta_refined = meta_refined.sort_values(by=['score'], ascending=False)
     return meta_refined
