@@ -11,22 +11,30 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
     <link rel="stylesheet" href="/static/css/styles.css">
-    <link rel="shortcut icon" type="image/png" href="/static/img/favicon.png"/>
 </head>
 
 <body>
 
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav class="navbar fixed-top navbar-expand-lg navbar-light" style="background-color: #3A4856">
+    <a class="navbar-brand" href="#">
+  </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-  <img id="logo" src="/static/img/movierec3000_logo.png" alt="Cartamon Logo">
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-    <div class="navbar-nav">
-
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" style="color: #E6F4F1" href="index">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="transition">What is it about?</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="input">Recommend</a>
+        </li>
+      </ul>
     </div>
-  </div>
 </nav>
 
   {% block content %}

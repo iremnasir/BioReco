@@ -1,0 +1,24 @@
+
+#entry{
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
+}
+
+#landing{
+  height: 100vh;
+  background-color: #4B6982;
+
+}
+.main-splash {
+  background-color: #4B6982;
+  color: #E69C24;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-light{
+  background-color:#9DADBC;
+}

@@ -18,6 +18,10 @@ def landing():
 def arguments():
     return render_template('input.html')
 
+@app.route('/transition')
+def transition():
+    return render_template('transition.html')
+
 @app.route('/results')
 def recommender():
 
