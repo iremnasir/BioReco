@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from scripts.models import recommend
+from scripts.models import recommend, listify
 from scripts.train import published_pick
 import pandas as pd
 
@@ -24,11 +24,11 @@ def transition():
 
 @app.route('/results')
 def recommender():
-
     user_input = dict(request.args)
     input_values = list(user_input.values())
     user_entry = input_values[0]
     category = input_values[1]
+    print(category)
     print(user_entry[0:2])
     if user_entry[0:2] == '10':
         print('Entry is a doi')
@@ -36,8 +36,11 @@ def recommender():
     else:
         print('Entry is a keyword')
         refined_recom = recommend(user_entry, category, keyword=True)
+    sugg_len = len(refined_recom)
+    lists = listify(refined_recom)
+    print(lists[1])
     print(refined_recom)
-    return render_template('results.html', tables=[refined_recom.to_html(classes='data')], titles=refined_recom.columns.values)
+    return render_template('results.html', sugg_len=sugg_len, lists=lists)
 
 @app.route('/train')
 def train():

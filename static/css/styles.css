@@ -32,3 +32,9 @@
 .btn-light{
   background-color:#9DADBC;
 }
+
+.row{
+  justify-content: center;
+  align-items: center;
+  margin-top: 60px;
+}

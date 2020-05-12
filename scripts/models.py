@@ -158,3 +158,11 @@ def recommend(user_input, category, keyword=False):
     meta_refined = neighbors.merge(df_meta, left_on='unique_id', right_on= 'unique_id', how='left')
     meta_refined = meta_refined.sort_values(by=['score'], ascending=False)
     return meta_refined
+
+def listify(dataframe):
+    column_list = ['score', 'doi_x', 'version', 'title', 'authors',
+                       'author_corresponding_institution', 'date', 'published']
+    list_of_lists=[]
+    for element in column_list:
+        list_of_lists.append(dataframe[element].to_list())
+    return list_of_lists

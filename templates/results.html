@@ -1,11 +1,20 @@
 {% extends "_base.html" %}
 
 {% block content %}
+<div class="row">
+{% for i in range(sugg_len) %}
 
-{% for table in tables %}
-            {{titles[loop.index]}}
-            {{ table|safe }}
+    <div class="card text-center" name="card{{ i }}" style="width: 18rem;">
+      <div class="card-body">
+        <h5 class="card-title">{{ lists[3][i] }}</h5>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <a href="https://doi.org/{{ lists[1][i] }}" class="btn btn-primary">Go to the preprint!</a>
+      </div>
+    </div>
+
+
 {% endfor %}
+</div>
 
 
 {% endblock %}
