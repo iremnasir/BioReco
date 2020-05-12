@@ -38,8 +38,6 @@ def recommender():
         refined_recom = recommend(user_entry, category, keyword=True)
     sugg_len = len(refined_recom)
     lists = listify(refined_recom)
-    print(lists[1])
-    print(refined_recom)
     return render_template('results.html', sugg_len=sugg_len, lists=lists)
 
 @app.route('/train')

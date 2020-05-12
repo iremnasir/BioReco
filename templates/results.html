@@ -1,19 +1,46 @@
+<!-- column_list = ['score', 'doi_x', 'version', 'title', 'authors',
+                     'author_corresponding_institution', 'date', 'published'] -->
+
 {% extends "_base.html" %}
 
 {% block content %}
 <div class="row">
-{% for i in range(sugg_len) %}
+  {% for i in range(sugg_len) %}
+  {% if lists[0][i] >= 0.15 %}
+  <div id="card_similar" class="card w-75 mb-3" name="card{{ i }}">
+    <div class="card-body">
+      <h4 class="card-title">{{ lists[3][i] }}</h4>
+      <h6 class="card-title"><i>{{ lists[4][i] }}</i></h6>
+      <br>
+      <div class="d-flex flex-row">
+        <div class="card-text p-2"><b>Date Published:</b><br>{{ lists[6][i] }}</div>
+        <div class="card-text p-2"><b>Version:</b><br>{{ lists[2][i] }}</div>
+        <div class="card-text p-2"><b>Corresponding Institution:</b><br>{{ lists[5][i] }}</div>
+        <div class="card-text p-2"><b>Peer Review Journal:</b><br>{{ lists[7][i] }}</div>
 
-    <div class="card text-center" name="card{{ i }}" style="width: 18rem;">
-      <div class="card-body">
-        <h5 class="card-title">{{ lists[3][i] }}</h5>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        <a href="https://doi.org/{{ lists[1][i] }}" class="btn btn-primary">Go to the preprint!</a>
       </div>
+      <a href="https://doi.org/{{ lists[1][i] }}" class="btn btn-light">Go to the preprint!</a>
     </div>
+  </div>
+  {% else %}
+  <div class="card w-75 mb-3" name="card{{ i }}">
+    <div class="card-body">
+      <h4 class="card-title">{{ lists[3][i] }}</h4>
+      <h6 class="card-title"><i>{{ lists[4][i] }}</i></h6>
+      <br>
+      <div class="d-flex flex-row">
+        <div class="card-text p-2"><b>Date Published:</b><br>{{ lists[6][i] }}</div>
+        <div class="card-text p-2"><b>Version:</b><br>{{ lists[2][i] }}</div>
+        <div class="card-text p-2"><b>Corresponding Institution:</b><br>{{ lists[5][i] }}</div>
+        <div class="card-text p-2"><b>Peer Review Journal:</b><br>{{ lists[7][i] }}</div>
 
+      </div>
+      <a href="https://doi.org/{{ lists[1][i] }}" class="btn btn-light">Go to the preprint!</a>
+    </div>
+  </div>
 
-{% endfor %}
+  {% endif %}
+  {% endfor %}
 </div>
 
 
