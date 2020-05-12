@@ -23,12 +23,13 @@
 }
 #card_similar{
   background-color: #D2F5FF;
-  color: #E69C24;
+  color: #3A4856;
 }
 
 .main-splash {
+  height: 100vh;
   background-color: #4B6982;
-  color: #9DADBC;
+  color: #E6F4F1;
   display: flex;
   flex-direction: column;
   justify-content: center;

@@ -15,12 +15,12 @@
 <form action="/results">
   <section class="main-splash">
 
-    <h3 class="Reco">Enter doi/keywords and select the category of suggestions</h3>
+    <h3 class="Reco">Enter doi/keywords for suggestions</h3>
 
-    <div class="row">
-      <input type="text" class="form-control" name="user_input" placeholder="Type doi or keywords" required>
-    </div>
-
+      <input type="text" class="form-control w-50" name="user_input" placeholder="e.g. '10.1101/2020.04.23.058776' or 'coronavirus'" required>
+<br>
+<br>
+<h5 >Select a category:</h5>
 <div class="form-group">
 
     <select class="form-control" id="category", name="category">
@@ -52,7 +52,7 @@
     </select>
 </div>
     <div class="button-container">
-      <button type="submit" class="btn btn-danger btn-lg m-3">Submit</button>
+      <button type="submit" class="btn btn-light">Submit</button>
     </div>
 
   </section>

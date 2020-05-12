@@ -13,10 +13,10 @@
       <h6 class="card-title"><i>{{ lists[4][i] }}</i></h6>
       <br>
       <div class="d-flex flex-row">
-        <div class="card-text p-2"><b>Date Published:</b><br>{{ lists[6][i] }}</div>
+        <div class="card-text p-2"><b>Date Posted:</b><br>{{ lists[6][i] }}</div>
         <div class="card-text p-2"><b>Version:</b><br>{{ lists[2][i] }}</div>
         <div class="card-text p-2"><b>Corresponding Institution:</b><br>{{ lists[5][i] }}</div>
-        <div class="card-text p-2"><b>Peer Review Journal:</b><br>{{ lists[7][i] }}</div>
+        <div class="card-text p-2"><b>Peer Review Journal:</b><br><a href="https://doi.org/{{ lists[7][i] }}">{{ lists[7][i] }}</a></div>
 
       </div>
       <a href="https://doi.org/{{ lists[1][i] }}" class="btn btn-light">Go to the preprint!</a>
@@ -32,7 +32,7 @@
         <div class="card-text p-2"><b>Date Published:</b><br>{{ lists[6][i] }}</div>
         <div class="card-text p-2"><b>Version:</b><br>{{ lists[2][i] }}</div>
         <div class="card-text p-2"><b>Corresponding Institution:</b><br>{{ lists[5][i] }}</div>
-        <div class="card-text p-2"><b>Peer Review Journal:</b><br>{{ lists[7][i] }}</div>
+        <div class="card-text p-2"><b>Peer Review Journal:</b><br><a href="https://doi.org/{{ lists[7][i] }}">{{ lists[7][i] }}</a></div>
 
       </div>
       <a href="https://doi.org/{{ lists[1][i] }}" class="btn btn-light">Go to the preprint!</a>
