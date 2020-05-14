@@ -1,6 +1,7 @@
 # BioReco
 
-![](demo-1.gif)
+![](demos/doi_1.gif)
+![](demos/Keyword_1.gif)
 
 ---
 
