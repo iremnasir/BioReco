@@ -5,7 +5,7 @@
 ---
 
 BioReco is a stand-alone recommender for bioRXiv preprints. It takes user input
-either as preprint **_D_** igital **_O_** bject **_I_** dentifier or a series of
+either as preprint (**D**)igital (**O**)bject (**I**)dentifier or a series of
 keywords as well as the category that user wants to get the suggestions in.
 
 It returns a list of preprints with corresponding information on the title,
@@ -16,7 +16,7 @@ version, the final destination (if the preprint is published in a subscription
 ## Keywords
   - Web-scraping
   - Collaborative Filtering (cosine similarities)
-  - sPacy
+  - sPacy/SciSpacy
   - Mongo DB
   - Flask
   - Heroku

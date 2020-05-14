@@ -7,7 +7,7 @@ import re
 
 #Mongo DB config
 #client = pymongo.MongoClient()
-client = pymongo.MongoClient("mongodb+srv://irem:<password>@cluster0-hzvy2.mongodb.net/BioReco?retryWrites=true&w=majority")
+client = pymongo.MongoClient("mongodb+srv://irem:iremnasir@cluster0-hzvy2.mongodb.net/BioReco?retryWrites=true&w=majority")
 db = client.BioReco
 
 def read_category_meta_df(category):
