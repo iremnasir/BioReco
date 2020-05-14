@@ -16,9 +16,6 @@ cymem==2.0.3
 decorator==4.4.2
 defusedxml==0.6.0
 docutils==0.15.2
-en-core-sci-lg==0.2.4
-en-ner-bc5cdr-md==0.2.4
-en-ner-bionlp13cg-md==0.2.4
 entrypoints==0.3
 Flask==1.1.2
 idna==2.9
@@ -58,8 +55,6 @@ preshed==3.0.2
 prometheus-client==0.7.1
 prompt-toolkit==3.0.5
 psutil==5.7.0
-psycopg2==2.8.5
-psycopg2-binary==2.8.5
 ptyprocess==0.6.0
 pyarrow==0.17.0
 pyasn1==0.4.8
@@ -97,3 +92,5 @@ wcwidth==0.1.9
 webencodings==0.5.1
 Werkzeug==1.0.1
 zipp==3.1.0
+gunicorn==20.0.4
+https://s3-us-west-2.amazonaws.com/ai2-s2-scispacy/releases/v0.2.4/en_ner_bionlp13cg_md-0.2.4.tar.gz

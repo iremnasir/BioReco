@@ -49,8 +49,5 @@ def train():
     return render_template('train.html', tables=[meta.to_html(classes='data')], titles=meta.columns.values)
 
 
-
-
-
     if __name__ == "__main__":
         app.run(host='0.0.0.0')
