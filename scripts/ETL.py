@@ -13,9 +13,9 @@ import numpy as np
 ner_bio = spacy.load('en_ner_bionlp13cg_md')
 
 #Mongo DB config
-#client = pymongo.MongoClient()
-client = pymongo.MongoClient
-("mongodb+srv://irem:iremnasir@cluster0-hzvy2.mongodb.net/BioReco?retryWrites=true&w=majority")
+client = pymongo.MongoClient()
+#client = pymongo.MongoClient
+#("mongodb+srv://irem:iremnasir@cluster0-hzvy2.mongodb.net/BioReco?retryWrites=true&w=majority")
 db = client.BioReco
 category_list = db.BioReco_raw.distinct("category")
 category_list.remove('')
