@@ -77,7 +77,15 @@ def read_category_df(category):
 
 
 def recommend(user_input, category, keyword=False):
-    """Takes the category df and makes and article-article matrix"""
+    """Takes the category df and makes and article-article matrix
+    Parameters:
+    -----------
+    user_input: keyword or doi of the article that user needs suggestions
+    category: category dataframe as index:articles & columns: entities
+
+    Returns: A dataframe with suggestions and their metadata
+    """
+
     df, df_meta = read_category_df(category)
     print(df.columns)
     #Take doi if keyword is False, extract the abstract and model.
@@ -114,16 +122,20 @@ def recommend(user_input, category, keyword=False):
     except KeyError:
         df_temp = df.drop(['index', 'doi', 'version'], axis=1)
         df_user_temp = df_user.drop(['index', 'doi', 'version'], axis=1)
-    #Concat it with the user df
 
+    #Concat it with the user df
     assert len(set(df_temp.columns).intersection((df_user_temp.columns))) >= 1
     df_temp = pd.concat([df_temp, df_user_temp], axis = 0, ignore_index=False)
     df_temp = df_temp.fillna(0)
-    #Create an empty A-A matrix
+
+    #Create an empty Article-Article matrix
     AA = np.zeros((len(df_temp), len(df_temp)))
+
     #Convert into df
     AA = pd.DataFrame(AA, index=df_temp.index, columns=df_temp.index)
-    # #Calculate similarities
+
+    #Calculate similarities
+    #Give a unique index to incoming user
     u = 9999999
     for v in AA.columns:
         AA.loc[u, v] = 1-distance.correlation(df_temp.loc[u], df_temp.loc[v])
@@ -131,6 +143,7 @@ def recommend(user_input, category, keyword=False):
     neighbors = AA.loc[active_user].sort_values(
                                      ascending=False)[1:51]
     neighbors = neighbors.to_frame()
+
     #Refine neighbors
     #Obtain overlapping number of entities
     query_entities = list(df_user.loc[active_user][df_user.loc[active_user]!=0].index)
@@ -140,26 +153,45 @@ def recommend(user_input, category, keyword=False):
         intersecting_ent = list(set(query_entities).intersection(neighbor_entities))
         overlapping_count.append(len(intersecting_ent))
     neighbors['overlapping'] = overlapping_count
+
     #Make a score function as a product of similarity *  # of common entities
     neighbors['score'] = neighbors[9999999]*neighbors['overlapping']
+
     #Add doi of each
     neighbors['doi'] = df.loc[neighbors.index]['doi']
     neighbors['unique_id'] = df.loc[neighbors.index]['index']
+
     #Filter with scores higher than 0
     neighbors = neighbors[neighbors['score']> 0]
+
     #Sort by score
     neighbors = neighbors.sort_values(by=['score'], ascending=False)
+
     #Drop the same entry if it pops up
     if keyword == False:
         neighbors = neighbors.drop(neighbors[(neighbors.doi == user_input)].index)
+
     #Drop duplicates, keep first
     neighbors = neighbors.drop_duplicates(keep='first')
+
     #Collect meta
     meta_refined = neighbors.merge(df_meta, left_on='unique_id', right_on= 'unique_id', how='left')
     meta_refined = meta_refined.sort_values(by=['score'], ascending=False)
     return meta_refined
 
 def listify(dataframe):
+    """Function to convert refined dataframe entities into list for displaying
+    on the web server
+
+    Parameters:
+    ------
+    dataframe: Nearest neighbors dataframe
+
+    Returns:
+    ------
+    A list of columns specified
+
+    """
     column_list = ['score', 'doi_x', 'version', 'title', 'authors',
                        'author_corresponding_institution', 'date', 'published']
     list_of_lists=[]
